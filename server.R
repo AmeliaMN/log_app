@@ -1,7 +1,7 @@
 library(mosaic)
 data(Whickham)
-Whickham <- Whickham %>%
-  mutate(isAlive = 2 - as.numeric(outcome)) %>%
+Whickham <- Whickham |>
+  mutate(isAlive = 2 - as.numeric(outcome)) |>
   mutate(ageGroup = cut(age, breaks=10))
 binned.y <- mean(~isAlive | ageGroup, data=Whickham)
 binned.x <- mean(~age | ageGroup, data=Whickham)
@@ -11,8 +11,8 @@ binned.x <- mean(~age | ageGroup, data=Whickham)
 server <- shinyServer(function(input, output) {
    
    output$distPlot <- renderPlot({
-     plot(Whickham$age, Whickham$isAlive, xlab="age", ylab="probability", xlim = c(0,110))
-     curve(plogis(input$const + input$slope*x), from=0, to=110, add=TRUE, lwd=2, col="red")
+     plot(Whickham$age, Whickham$isAlive, xlab="age", ylab="probability", xlim = c(-20,200))
+     curve(plogis(input$const + input$slope*x), from=-20, to=200, add=TRUE, lwd=2, col="red")
    })
    output$logPlot <- renderPlot({
      plot(Whickham$age, input$const + input$slope*Whickham$age,ylab="log-odds", xlab="age", ylim=c(-10, 10),xlim=c(15,85), type="l", col="red")
